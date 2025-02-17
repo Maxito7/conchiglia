@@ -120,30 +120,3 @@ pub fn process_line(line: &str) {
         }
     }
 }
-
-// We remove the newline character and interpret args
-/*
-let mut parts = input.trim().split_whitespace();
-let command = parts.next().expect("command args should be valid");
-let args = parts;
-
-// We do pattern matching for commands like `cd`
-match command {
-    "cd" => {
-        let new_dir = args.peekable().peek().map_or("/", |x| *x);
-        let root = Path::new(new_dir);
-        if let Err(e) = env::set_current_dir(&root) {
-            eprintln!("{}", e);
-        }
-    }
-    "exit" => return,
-    command => {
-        let mut child = Command::new(command)
-            .args(args)
-            .spawn()
-            .expect("entered command should exist");
-
-        child.wait();
-    }
-}
-*/
