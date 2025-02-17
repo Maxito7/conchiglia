@@ -20,7 +20,7 @@ pub fn parse_command(line: &str) -> Result<Vec<String>, ParseError> {
             (Some(q), _) if c == q => {
                 quotes_content = None;
             }
-            // Inside of a quoted sections, so we add 'c' to out current token
+            // Inside of a quoted section, so we add 'c' to our current token
             (Some(_), _) => {
                 current_token.push(c);
             }
