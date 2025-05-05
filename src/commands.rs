@@ -29,6 +29,9 @@ pub fn parse_command(line: &str) -> Result<Vec<String>, ParseError> {
                 if !current_token.is_empty() {
                     tokens.push(current_token);
                     current_token = String::new();
+                } else {
+                    tokens.push("".to_string());
+                    current_token = String::new();
                 }
                 while let Some(&next_c) = chars.peek() {
                     if next_c.is_whitespace() {
@@ -50,6 +53,8 @@ pub fn parse_command(line: &str) -> Result<Vec<String>, ParseError> {
 
     if !current_token.is_empty() {
         tokens.push(current_token);
+    } else {
+        tokens.push("".to_string());
     }
 
     Ok(tokens)
@@ -58,7 +63,7 @@ pub fn parse_command(line: &str) -> Result<Vec<String>, ParseError> {
 // Special function to handle built-in `cd`
 pub fn handle_cd(tokens: Vec<String>) {
     if tokens.len() > 2 {
-        eprint!(
+        eprintln!(
             "error: cd requires exactly one argument if you want to go to an specific directory"
         );
         return;
@@ -67,8 +72,12 @@ pub fn handle_cd(tokens: Vec<String>) {
     if tokens.len() == 1 {
         let root = Path::new("/");
         let _ = env::set_current_dir(root);
-    } else if env::set_current_dir(&tokens[1]).is_err() {
-        eprint!("error: cd failed");
+    } else {
+        let err_cond = env::set_current_dir(&tokens[1]);
+        match err_cond {
+            Ok(_) => eprintln!(),
+            Err(e) => eprintln!("{}", e),
+        }
     }
 }
 
